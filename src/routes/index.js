@@ -11,7 +11,7 @@ let routes = app => {
   router.get("/files", uploadController.getListFiles);
   router.get("/files/:name", uploadController.download);
 
-  router.get("/files/signup" , signupController.getSignUp)  
+  router.get("/files/signup" , signupController.getSignUp);
 
   return app.use("/", router);
 };
