@@ -4,6 +4,7 @@ const homeController = require("../controllers/home");
 const uploadController = require("../controllers/upload");
 const signupController = require("../controllers/signup"); 
 
+
 let routes = app => {
   router.get("/", homeController.getHome);
 
@@ -11,7 +12,8 @@ let routes = app => {
   router.get("/files", uploadController.getListFiles);
   router.get("/files/:name", uploadController.download);
 
-  router.get("/files/signup" , signupController.getSignUp)  
+  router.get("/signup" ,signupController.signupRender )
+  router.post("/signup" , signupController.getSignUp)  
 
   return app.use("/", router);
 };
