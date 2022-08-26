@@ -43,7 +43,7 @@ const login = (req, res)  =>{
         }
   
         if (password == data.password) {
-            return res.sendFile(path.join(`${__dirname}/../views/success.html`));;
+            return res.sendFile(path.join(`${__dirname}/../views/success.html`));
         }
         else {
             return res.status(500).send();
