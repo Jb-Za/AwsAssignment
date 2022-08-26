@@ -1,4 +1,5 @@
 const UserLogin = require("../middleware/users");
+const path = require('path');
 
 var bcrypt = require('bcrypt');
 
@@ -26,17 +27,19 @@ const getSignUp = async (req, res) => {
                 return res.status(500).send();
             }
             console.log('new user has been saved');
-            return res.status(200).send();
+            return res.sendFile(path.join(`${__dirname}/../views/index.html`));
+            //return res.status(200).send();
         });
     
         });
     }
 
-const signupRender = async (req, res) => {
-    res.render('signup');
+const signup = async (req, res) => {
+    return res.sendFile(path.join(`${__dirname}/../views/signup.html`));
 }
+
 module.exports = {
     getSignUp,
-    signupRender
+    signup
 };
   
