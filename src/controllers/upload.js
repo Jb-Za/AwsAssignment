@@ -10,7 +10,7 @@ const baseUrl = "http://localhost:8080/files/";
 
 const mongoClient = new MongoClient(url);
 
-const uploadFiles = async (req, res) => {
+/*const uploadFiles = async (req, res) => {
   try {
     await upload(req, res);
     console.log(req.files);
@@ -37,7 +37,7 @@ const uploadFiles = async (req, res) => {
       message: `Error when trying upload many files: ${error}`,
     });
   }
-};
+};*/
 
 const getListFiles = async (req, res) => {
   try {
@@ -99,8 +99,45 @@ const download = async (req, res) => {
   }
 };
 
+
+
+
+//////////////////////// aws comprehend testing
+var textToTest = "I heard three gunshots and a loud crash, followed by a lot of shouting on madilyn steet, Bellville, Cape Town"
+
+const { ComprehendClient, BatchDetectDominantLanguageCommand } = require("@aws-sdk/client-comprehend");
+
+  const uploadFiles = async (req, res) => {
+  // a client can be shared by different commands.
+
+  const client = new ComprehendClient({ region: "us-east-1" });
+
+  const params = {
+  textToTest
+  };
+  const command = new BatchDetectDominantLanguageCommand(params);
+
+  // async/await.
+  try {
+  const data = await client.send(command);
+
+  console.log(data)
+  // process data.
+  } catch (error) {
+  // error handling.
+  } finally {
+  // finally.
+  }
+
+
+}
+
+
+/////////////////////// aws comprehend testing
+
 module.exports = {
   uploadFiles,
   getListFiles,
   download,
 };
+
