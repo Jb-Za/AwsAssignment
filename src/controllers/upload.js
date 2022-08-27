@@ -103,7 +103,7 @@ const download = async (req, res) => {
 
 
 //////////////////////// aws comprehend testing
-const Text = "I heard three gunshots and a loud crash, followed by a lot of shouting on madilyn steet, Bellville, Cape Town"
+const Text = "I heard three gunshots and a loud crash, followed by a lot of shouting on madilyn street, Bellville, Cape Town"
 
 
 const AWS = require('aws-sdk')
@@ -112,13 +112,13 @@ AWS.config.region = ( process.env.AWS_REGION || 'us-east-1' )
 const comprehend = new AWS.Comprehend()
 
 const uploadFiles = async (req) => {
-    const Text = "HELP! I AM BEING CHASED BY A FLUFFY TEDDY BEAR WITH A AXE"
+    const Text = "It is raining today in Seattle"
     const params = {
       LanguageCode: 'en',
       Text
     }
 
-    const result = await comprehend.detectSentiment(params).promise()
+    const result = await comprehend.detectEntities(params).promise()
     console.log('doSentimentAnalysis: ', result)
     return result
   
