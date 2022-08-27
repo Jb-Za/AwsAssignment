@@ -103,33 +103,25 @@ const download = async (req, res) => {
 
 
 //////////////////////// aws comprehend testing
-var textToTest = "I heard three gunshots and a loud crash, followed by a lot of shouting on madilyn steet, Bellville, Cape Town"
-
-const { ComprehendClient, BatchDetectDominantLanguageCommand } = require("@aws-sdk/client-comprehend");
-
-  const uploadFiles = async (req, res) => {
-  // a client can be shared by different commands.
-
-  const client = new ComprehendClient({ region: "us-east-1" });
-
-  const params = {
-  textToTest
-  };
-  const command = new BatchDetectDominantLanguageCommand(params);
-
-  // async/await.
-  try {
-  const data = await client.send(command);
-
-  console.log(data)
-  // process data.
-  } catch (error) {
-  // error handling.
-  } finally {
-  // finally.
-  }
+const Text = "I heard three gunshots and a loud crash, followed by a lot of shouting on madilyn steet, Bellville, Cape Town"
 
 
+const AWS = require('aws-sdk')
+AWS.config.region = ( process.env.AWS_REGION || 'us-east-1' )
+
+const comprehend = new AWS.Comprehend()
+
+const uploadFiles = async (req) => {
+    const Text = "HELP! I AM BEING CHASED BY A FLUFFY TEDDY BEAR WITH A AXE"
+    const params = {
+      LanguageCode: 'en',
+      Text
+    }
+
+    const result = await comprehend.detectSentiment(params).promise()
+    console.log('doSentimentAnalysis: ', result)
+    return result
+  
 }
 
 
