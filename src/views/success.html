@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Node.js upload images</title>
+    <title>Crime Reporter</title>
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -13,14 +13,55 @@
       div.preview-images > img {
         width: 30%;
       }
+      body{
+        background:rgb(204, 204, 204);
+
+    }
+    .form-control-file{
+      width:50%;
+      border:1px;
+      border-color: black;
+      border-style: solid;
+  }
+
+
+    *{
+        margin: 0;
+        padding: 0;
+        background:rgb(204, 204, 204);
+
+        
+    }
+    input[type=text]:focus {
+      width: 50%;
+      padding: 12px 20px;
+      resize: vertical;
+      border: 1px solid;
+    }
+    input[type=text]{
+      width: 25%;
+      padding: 12px 20px;
+      border-radius: 4px;
+      resize: vertical;
+      border: 1px solid;
+  
+    }
+    .form-control{
+      width:50%;
+    }
     </style>
   </head>
   <body>
     <div class="container">
       <div class="row">
         <div class="col-sm-8 mt-3">
-          <h4>Node.js upload images - bezkoder.com</h4>
-
+          <h4>Enter report via text or attachments</h4>
+          
+          <div class="text-wrap form-group">
+            <label for="text-input">Description</label>
+            <textarea type="text" class="form-control" name="text-input"></textarea>
+            
+        </div>
           <form
             class="mt-4"
             action="/upload"
@@ -33,7 +74,7 @@
                 name="file"
                 multiple
                 id="input-files"
-                class="form-control-file border"
+                class="form-control-file "
               />
               <!-- <input
                 type="file"
@@ -52,7 +93,9 @@
           <div class="preview-images"></div>
         </div>
       </div>
-    </div>
+
+    
+  </div>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>
