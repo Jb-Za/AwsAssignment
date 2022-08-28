@@ -39,11 +39,9 @@
   padding-top: 20px;
 }
 
-
-
 .left {
   left: 0;
-  background-color: #111;
+  background-color: lightgrey;
 }
 .topright {
    right: 0;
@@ -57,7 +55,7 @@
 
 .right {
   right: 0;
-  background-color: red;
+  background-color: pink;
 }
 
 .centered {
@@ -75,36 +73,58 @@
         <div class="centered"> 
             <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
             <body>
-            
+            <Heading>CRIMES COMMITTED BY AREA</Heading>
             <canvas id="myChart3" style="width:100%;max-width:600px"></canvas>
             
             <script>
-            var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
-            var yValues = [55, 49, 44, 24, 15];
-            var barColors = [
-              "#b91d47",
-              "#00aba9",
-              "#2b5797",
-              "#e8c3b9",
-              "#1e7145"
-            ];
-            
-            new Chart("myChart3", {
-              type: "pie",
-              data: {
-                labels: xValues,
-                datasets: [{
-                  backgroundColor: barColors,
-                  data: yValues
-                }]
-              },
-              options: {
-                title: {
-                  display: true,
-                  text: "World Wide Wine Production 2018"
-                }
-              }
-            });
+
+                const Http4 = new XMLHttpRequest();
+                const url4='/getAreaCrimes';
+                Http4.open("GET", url4);
+                Http4.send();
+
+                    
+                Http4.onreadystatechange = (e) => {
+                    var testing = JSON.parse(Http4.responseText);
+
+                    var xValues = [];
+                    var yValues = [];
+
+                    for (i in testing.policeDb){
+                        var area = testing.policeDb[i].area;
+                        if(!xValues.includes(area)){
+                            xValues.push(area)
+                            yValues.push(0)   
+                            yValues[xValues.indexOf(area)] += 1    
+                        }
+                        else{
+                            yValues[xValues.indexOf(area)] += 1 
+                        }
+
+                    }
+
+                    var barColors = [
+                    "#b91d47",
+                    "#00aba9",
+                    "#2b5797",
+                    "#e8c3b9",
+                    "#1e7145"
+                    ];
+                    
+                    new Chart("myChart3", {
+                    type: "pie",
+                    data: {
+                        labels: xValues,
+                        datasets: [{
+                        backgroundColor: barColors,
+                        data: yValues
+                        }]
+                    },
+                    options: {
+                    }
+                    });
+                    }
+                
             </script>
                     
                     </div>
@@ -112,95 +132,67 @@
     
     
     <div class= "split topright">  
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-              Areas List
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a id = "Bellville"   class="dropdown-item" href="#">Bellville</a ></li>
-              <li><a id = "Kuils River" class="dropdown-item" href="#">Kuils River</a></li>
-              <li><a id = "Stellenbosch"class="dropdown-item" href="#">Stellenbosch</a></li>
-              <li><a id = "Edgemead"    class="dropdown-item" href="#">Edgemead</a></li>
-              <li><a id = "Table View" class="dropdown-item" href="#">Table View</a></li>
-              <li><a id = "Parow"       class="dropdown-item" href="#">Parow</a></li>
-              <li><a id = "Athlone" class="dropdown-item" href="#">Athlone</a></li>
-              <li><a id = "Elsies Rivier" class="dropdown-item" href="#">Elsies Rivier</a></li>
-              <li><a id = "Epping" class="dropdown-item" href="#">Epping</a></li>
-              <li><a id = "Belhar" class="dropdown-item" href="#">Belhar</a></li>
-              <li><a id = "Delft" class="dropdown-item" href="#">Delft</a></li>
-              <li><a id = "Brackenfell" class="dropdown-item" href="#">Brackenfell</a></li>
-              <li><a id = "Mitchells Plain" class="dropdown-item" href="#">Mitchells Plain</a></li>
-              <li><a id = "Philippi" class="dropdown-item" href="#">Philippi</a></li>
-              <li><a id = "Claremont" class="dropdown-item" href="#">Claremont</a></li>
-              <li><a id = "Muizenberg" class="dropdown-item" href="#">Muizenberg</a></li>
-            </ul>
-          </div> 
         <div class="centered"> 
             <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
             <body>
-
+            <Heading>NUMBER OF CRIMES</Heading>
             <canvas id="myChart4" style="width:100%;max-width:600px"></canvas>
             
-            <form
-                class="form-group"
-                action="/getDb"
-                method="GET"
-            >
-            </form>
-            
             <script> 
-            
-            var xValues = [];
-var yValues = [];
-for(i in policeDb) {
-    addressArray = ['street','avenue', 'ave', 'str', 'close', 'lane', 'square', 'highway', 'boulevard']
-    testString = policeDb[i].Text.toLowerCase()
-    address = addressArray.some(w => testString.includes(w))
-    if (address) {
-        xValues.push(policeDb[i].Text);
-        yValues.push;
-    }
-}
+                const Http = new XMLHttpRequest();
+                const url='/ApiGet';
+                Http.open("GET", url);
+                Http.send();
 
-
-
-var barColors = [
-"#b91d47",
-"#00aba9",
-"#2b5797",
-"#e8c3b9",
-"#1e7145"
-];
-
-new Chart("myChart4", {
-type: "pie",
-data: {
-    labels: xValues,
-    datasets: [{
-    backgroundColor: barColors,
-    data: yValues
-    }]
-},
-options: {
-    title: {
-    display: true,
-    text: "World Wide Wine Production 2018"
-    }
-}
-});
-            
-            </script>
-            
-            </script>
-                    
-                    </div>
                 
+                Http.onreadystatechange = (e) => {
+                    var testing = JSON.parse(Http.responseText)
+                    console.log(testing)
+                    var xValues = [];
+                    var yValues = [];
+
+                    //streetCounter = 0;
+                    console.log()
+                    for(i in testing.policeDb) {
+                        var crime = testing.policeDb[i].crimes;
+                        if(!xValues.includes(crime)){
+                            xValues.push(crime)
+                            yValues.push(0)   
+                            yValues[xValues.indexOf(crime)] += 1    
+                        }
+                        else{
+                            yValues[xValues.indexOf(crime)] += 1 
+                        }
+                    }
+
+                    //console.log(xValues);
+                    //console.log(yValues);
+
+                    var barColors = [
+                    "#b91d47",
+                    "#00aba9",
+                    "#2b5797",
+                    "#e8c3b9",
+                    "#1e7145"
+                    ];
+
+                    new Chart("myChart4", {
+                    type: "pie",
+                    data: {
+                        labels: xValues,
+                        datasets: [{
+                        backgroundColor: barColors,
+                        data: yValues
+                        }]
+                    },
+                    options: {
+                    }
+                    });
+                }
+            </script>
+                    </div>
                 </div>
     
-    
-    
-    
-   
 </div>
 <div id="bottom">
     <div> 
@@ -212,47 +204,55 @@ options: {
         <canvas id="myChart" style="width:100%"></canvas>
         
         <script>
-        var xyValues = [
-          {x:50, y:7},
-          {x:60, y:8},
-          {x:70, y:8},
-          {x:80, y:9},
-          {x:90, y:9},
-          {x:100, y:9},
-          {x:110, y:10},
-          {x:120, y:11},
-          {x:130, y:14},
-          {x:140, y:14},
-          {x:150, y:15}
-        ];
-        
-        new Chart("myChart", {
-          type: "scatter",
-          data: {
-            datasets: [{
-              pointRadius: 4,
-              pointBackgroundColor: "rgb(0,0,255)",
-              data: xyValues
-            }]
-          },
-          options: {
-            legend: {display: false},
-            scales: {
-              xAxes: [{ticks: {min: 40, max:160}}],
-              yAxes: [{ticks: {min: 6, max:16}}],
+            const Http2 = new XMLHttpRequest();
+            const url2='/getNumCrimes';
+            Http2.open("GET", url2);
+            Http2.send();
+
+                
+            Http2.onreadystatechange = (e) => {
+                var testing = JSON.parse(Http2.responseText);
+                var xValues = [];
+                var yValues = [];
+                for (i in testing.policeDb){
+                    if (testing.policeDb[i].date){
+                        var day = new Date(testing.policeDb[i].date);
+                        
+                        var myDay = day.getFullYear() + '-' + day.getMonth() + '-' + day.getDate();
+                        //console.log(myDay)
+                        if(!xValues.includes(myDay)){
+                            xValues.push(myDay)
+                            yValues.push(0)   
+                            yValues[xValues.indexOf(myDay)] += 1    
+                        }
+                        else{
+                            yValues[xValues.indexOf(myDay)] += 1 
+                        }
+                                        
+                    }
+                }
+                new Chart("myChart", {
+                type: "line",
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        pointRadius: 4,
+                        pointBackgroundColor: "rgb(0,0,255)",
+                        data: yValues
+                    }]   
+                },
+                options: {
+                    legend: {display: false},
+                }
+                });
             }
-          }
-        });
-        </script>
         
+        </script>
         </body>
         </html>
-        
       </div>
     </div>
-    
     <div class="split right">
-        
         <div class="centered">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
         <body>
@@ -260,36 +260,48 @@ options: {
         <canvas id="myChart2" style="width:100%"></canvas>
         
         <script>
-               var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
-        var yValues = [55, 49, 44, 24, 15];
-        var barColors = ["red", "green","blue","orange","brown"];
-        
-        new Chart("myChart2", {
-          type: "bar",
-          data: {
-            labels: xValues,
-            datasets: [{
-              backgroundColor: barColors,
-              data: yValues
-            }]
-          },
-          options: {
-            legend: {display: false},
-            title: {
-              display: true,
-              text: "World Wine Production 2018"
-            }
-          }
-        });
+            const Http3 = new XMLHttpRequest();
+            const url3='/getAreaCrimes';
+            Http3.open("GET", url3);
+            Http3.send();
+            Http3.onreadystatechange = (e) => {
+                var testing = JSON.parse(Http3.responseText);
+
+                var xValues = [];
+                var yValues = [];
+
+                for (i in testing.policeDb){
+                    var area = testing.policeDb[i].area;
+                    if(!xValues.includes(area)){
+                        xValues.push(area)
+                        yValues.push(0)   
+                        yValues[xValues.indexOf(area)] += 1    
+                    }
+                    else{
+                        yValues[xValues.indexOf(area)] += 1 
+                    }
+                }
+                var barColors = ["blue", "red", "green","orange","brown"];
+                new Chart("myChart2", {
+                type: "bar",
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues
+                    }]
+                },
+                options: {
+                    legend: {display: false},
+                }
+                });
+
+            }  
         </script>
-        
         </body>
         </html>
-        
       </div>
     </div>
-    
 </div>
-
 </div>
 </html>

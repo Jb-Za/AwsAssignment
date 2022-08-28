@@ -17,26 +17,33 @@ var email = '';
 const login = (req, res)  =>{
     email = req.body.email;
     var password = req.body.pwd;
-  
-    UserLogin.findOne({email:email},function(err,data){
-        console.log(data);
-        if(err){
-            console.log(err);
-            return res.status(500).send();
-        }
-        
-        if(!data){
-            console.log("User doesn't exist")
-            return res.status(404).send();
-        }
-  
-        if (password == data.password) {
-            return res.sendFile(path.join(`${__dirname}/../views/success.html`));
-        }
-        else {
-            return res.status(500).send();
-        }
-    });
+
+    if (email == "police@email.com" && password == 'police')
+    {
+        return res.sendFile(path.join(`${__dirname}/../views/dashboard.html`));
+    }
+    else{
+        UserLogin.findOne({email:email},function(err,data){
+            console.log(data);
+            if(err){
+                console.log(err);
+                return res.status(500).send();
+            }
+            
+            if(!data){
+                console.log("User doesn't exist")
+                return res.status(404).send();
+            }
+      
+            if (password == data.password) {
+                return res.sendFile(path.join(`${__dirname}/../views/success.html`));
+            }
+            else {
+                return res.status(500).send();
+            }
+        });
+    }   
+    
   
   };
   

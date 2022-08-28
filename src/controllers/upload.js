@@ -36,6 +36,7 @@ const uploadFiles = async (req, res) => {
     newtext.text = req.body.textinput;
     newtext.save(function(err,savePost){});
 
+    getTextCatagories(newtext.text);
     //console.log(req.files);
     //console.log(req.body.textinput);
     
@@ -43,11 +44,15 @@ const uploadFiles = async (req, res) => {
       return res
         
        .send({ message: "You must select at least 1 file." });
-   }
+    }
 
+    //return res.sendFile(path.join(`${__dirname}/../views/index.html`));
+   
     return res.status(200).send({
-      message: "Files have been uploaded.",
+
+      message: "Thank you for your submission, your files and report have been submitted.",
     });
+
 
   } catch (error) {
     console.log(error);
@@ -62,87 +67,6 @@ const uploadFiles = async (req, res) => {
     });
   }
 };
-
-const getListFiles = async (req, res) => {
- 
- // try {
-    await mongoClient.connect();
-    
-    const database = mongoClient.db(dbConfig.database);
-    const images = database.collection(dbConfig.imgBucket + ".files");
-
-    images.find()
-   
-   
-    /*
-    const cursor = images.find({}).then()
-
-    
-    await cursor.forEach((doc) => {
-      console.log('what is love?');
-      console.log(doc);
-      fileInfos.push({
-        name: doc.filename,
-        url: baseUrl + doc.filename,
-      });
-    });
-    /*
-    if ((await cursor.count) === 0) {
-      return res?.status(500).send({
-        message: "No files found!",
-      });
-    }
-
-    let fileInfos = [];
-    await cursor.forEach((doc) => {
-      console.log('what is love?');
-      console.log(doc);
-      fileInfos.push({
-        name: doc.filename,
-        url: baseUrl + doc.filename,
-      });
-    });
-
-    console.log(fileInfos)
-    return fileInfos;
-  } catch (error) {
-    return res.status(500).send({
-      message: error.message,
-    });
-  }*/
-};
-
-const download = async (req, res) => {
-  try {
-    await mongoClient.connect();
-
-    const database = mongoClient.db(dbConfig.database);
-    const bucket = new GridFSBucket(database, {
-      bucketName: dbConfig.imgBucket,
-    });
-
-    let downloadStream = bucket.openDownloadStreamByName(req.params.name);
-
-    downloadStream.on("data", function (data) {
-      return res.status(200).write(data);
-    });
-
-    downloadStream.on("error", function (err) {
-      return res.status(404).send({ message: "Cannot download the Image!" });
-    });
-
-    downloadStream.on("end", () => {
-      return res.end();
-    });
-  } catch (error) {
-    return res.status(500).send({
-      message: error.message,
-    });
-  }
-};
-
-
-
 
 //////////////////////// aws comprehend 
 const ExampleText = "I heard three gunshots and a loud crash, followed by a lot of shouting on madilyn street, Bellville, Cape Town";
@@ -189,14 +113,13 @@ const locations = [
 
 const catagories = [
   "gunshots",
-  "hijacking",
-  "robbery",
-  "robbing",
-  "theft",
-  "burglary",
+  "hijackings",
+  "robbings",
+  "thefts",
+  "burglaries",
   "arson",
   "fraud",
-  "murder",
+  "murders",
   "stalking",
   
 ]
@@ -205,15 +128,15 @@ module.exports = PolicePost;
 module.exports = email;
 
 const submitPost =  async (req, res) => {
-  //var result = await uploadFiles(req);
-  var res2 = await getListFiles();
-  console.log(getListFiles());
-  console.log(res2);
+  
+  //var res2 = await getListFiles();
+  //console.log(getListFiles());
+  //console.log(res2);
   //var text = $(document).getElementsByName('text-input')[0].value                 ////fix
   //text = ExampleText;
   //console.log(email.getUserEmail());
-  //getTextCatagories(text);
-  
+  await getTextCatagories(req);
+  await uploadFiles(req);
   //uploadFiles(req, result);
 
   //res = result;
@@ -261,7 +184,7 @@ const getTextCatagories = async (req) => {  // req will be the text from the tex
     newPolicPost.save(function(err,savePost){});
 
     const filter = {};
-    //console.log(await PolicePost.find(filter) )
+    console.log(await PolicePost.find(filter) )
 
   }
 }
@@ -299,7 +222,7 @@ const uploadFiles = async (req, res) => {
 
 module.exports = {
   uploadFiles,
-  getListFiles,
-  download,
+  //getListFiles,
+  //download,
   submitPost
 };
