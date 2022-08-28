@@ -9,6 +9,7 @@ var storage = new GridFsStorage({
   file: (req, file) => {
     const match = ["image/png", "image/jpeg"];
 
+
     if (match.indexOf(file.mimetype) === -1) {
       const filename = `${Date.now()}${file.originalname}`; 
       return filename;
@@ -16,10 +17,16 @@ var storage = new GridFsStorage({
 
     return {
       bucketName: dbConfig.imgBucket,
-      filename: `${Date.now()}${file.originalname}`
+
+      filename: `${Date.now()}${file.originalname}`,
+      filename: `${Date.now()}${file.originalname}`,
+      bucketName: dbConfig.textBucket,
+  
+
     };
   }
 });
+
 
 var uploadFiles = multer({ storage: storage }).array("file", 10);
 var uploadFilesMiddleware = util.promisify(uploadFiles);

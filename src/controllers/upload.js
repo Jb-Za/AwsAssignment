@@ -4,12 +4,62 @@ const PolicePost = require("../middleware/police");
 
 const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
-
+var mongoose = require('mongoose');
 const url = dbConfig.url;
 
 const baseUrl = "http://localhost:8080/files/";
+const myconnection2 = mongoose.createConnection("mongodb://127.0.0.1:27017/description");
 
 const mongoClient = new MongoClient(url);
+
+
+
+const textSchema = new mongoose.Schema(
+  {
+      //children:       [crimesChildSchema,areaChildSchema,addressChildSchema]
+      date: {type:Date},
+      email: {type:String},
+      text: {type:String},
+      
+  }
+);
+var textpost = myconnection2.model('TextPost', textSchema);   
+
+const uploadFiles = async (req, res) => {
+  try {
+    await upload(req, res);
+    var newtext = new textpost();
+    newtext.date = Date.now();
+   
+    newtext.text = req.body.textinput;
+    newtext.save(function(err,savePost){});
+
+    console.log(req.files);
+    console.log(req.body.textinput);
+
+    if (req.files.length <= 0) {
+      return res
+        .status(400)
+        .send({ message: "You must select at least 1 file." });
+    }
+
+    return res.status(200).send({
+      message: "Files have been uploaded.",
+    });
+
+  } catch (error) {
+    console.log(error);
+
+    if (error.code === "LIMIT_UNEXPECTED_FILE") {
+      return res.status(400).send({
+        message: "Too many files to upload.",
+      });
+    }
+    return res.status(500).send({
+      message: `Error when trying upload many files: ${error}`,
+    });
+  }
+};
 
 const getListFiles = async (req, res) => {
   try {
@@ -78,7 +128,11 @@ const ExampleText = "I heard three gunshots and a loud crash, followed by a lot 
 const AWS = require('aws-sdk');
 AWS.config.region = ( process.env.AWS_REGION || 'us-east-1' );
 
+
 const comprehend = new AWS.Comprehend();
+
+//////////////////////// aws comprehend testing
+var textToTest = "I heard three gunshots and a loud crash, followed by a lot of shouting on madilyn steet, Bellville, Cape Town"
 
 const doComprehend = async (req, res) => {
   const Text = req
@@ -185,35 +239,7 @@ const getTextCatagories = async (req) => {  // req will be the text from the tex
   }
 }
 
-const uploadFiles = async (req, res) => {
-  try {
-    await upload(req, res);
-    console.log(req.files);
-
-    if (req.files.length <= 0) {
-      return res
-        .status(400)
-        .send({ message: "You must select at least 1 file." });
-    }
-
-    return res.status(200).send({
-      message: "Files have been uploaded.",
-    });
-
-  } catch (error) {
-    console.log(error);
-
-    if (error.code === "LIMIT_UNEXPECTED_FILE") {
-      return res.status(400).send({
-        message: "Too many files to upload.",
-      });
-    }
-    return res.status(500).send({
-      message: `Error when trying upload many files: ${error}`,
-    });
-  }
-};
-
+/////////////////////// aws comprehend testing
 
 
 module.exports = {
