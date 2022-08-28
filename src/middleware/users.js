@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 const myconnection = mongoose.createConnection("mongodb://127.0.0.1:27017/users");
-const myconnection2 = mongoose.createConnection("mongodb://127.0.0.1:27017/description");
+
 //var userlogin = new myconnection.Schema
 
 var userLoginSchema = new mongoose.Schema({

@@ -4,14 +4,12 @@ const PolicePost = require("../middleware/police");
 
 const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
-var mongoose = require('mongoose');
+
 const url = dbConfig.url;
 
 const baseUrl = "http://localhost:8080/files/";
-const myconnection2 = mongoose.createConnection("mongodb://127.0.0.1:27017/description");
 
 const mongoClient = new MongoClient(url);
-
 
 
 const textSchema = new mongoose.Schema(
@@ -28,14 +26,7 @@ var textpost = myconnection2.model('TextPost', textSchema);
 const uploadFiles = async (req, res) => {
   try {
     await upload(req, res);
-    var newtext = new textpost();
-    newtext.date = Date.now();
-   
-    newtext.text = req.body.textinput;
-    newtext.save(function(err,savePost){});
-
     console.log(req.files);
-    console.log(req.body.textinput);
 
     if (req.files.length <= 0) {
       return res
@@ -43,9 +34,9 @@ const uploadFiles = async (req, res) => {
         .send({ message: "You must select at least 1 file." });
     }
 
-    return res.status(200).send({
-      message: "Files have been uploaded.",
-    });
+    // return res.status(200).send({
+    //   message: "Files have been uploaded.",
+    // });
 
   } catch (error) {
     console.log(error);
@@ -132,6 +123,7 @@ AWS.config.region = ( process.env.AWS_REGION || 'us-east-1' );
 const comprehend = new AWS.Comprehend();
 
 //////////////////////// aws comprehend testing
+
 var textToTest = "I heard three gunshots and a loud crash, followed by a lot of shouting on madilyn steet, Bellville, Cape Town"
 
 const doComprehend = async (req, res) => {
@@ -238,6 +230,29 @@ const getTextCatagories = async (req) => {  // req will be the text from the tex
 
   }
 }
+
+// const Text = "I heard three gunshots and a loud crash, followed by a lot of shouting on madilyn street, Bellville, Cape Town"
+
+
+// const AWS = require('aws-sdk')
+// AWS.config.region = ( process.env.AWS_REGION || 'us-east-1' )
+
+// const comprehend = new AWS.Comprehend()
+
+// const uploadFiles = async (req) => {
+//     const Text = "It is raining today in Seattle"
+//     const params = {
+//       LanguageCode: 'en',
+//       Text
+//     }
+
+//     const result = await comprehend.detectEntities(params).promise()
+//     console.log('doSentimentAnalysis: ', result)
+//     return result
+  
+// }
+
+
 
 /////////////////////// aws comprehend testing
 

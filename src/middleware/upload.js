@@ -7,8 +7,7 @@ var storage = new GridFsStorage({
   url: dbConfig.url + dbConfig.database,
   options: { useNewUrlParser: true, useUnifiedTopology: true },
   file: (req, file) => {
-    const match = ["image/png", "image/jpeg"];
-
+    const match = ["image/png", "image/jpeg", "file/mp4" ,"text"];
 
     if (match.indexOf(file.mimetype) === -1) {
       const filename = `${Date.now()}${file.originalname}`; 
@@ -18,15 +17,18 @@ var storage = new GridFsStorage({
     return {
       bucketName: dbConfig.imgBucket,
 
+
       filename: `${Date.now()}${file.originalname}`,
       filename: `${Date.now()}${file.originalname}`,
       bucketName: dbConfig.textBucket,
   
 
+
+      filename: `${Date.now()}${file.originalname}` ///////////////////////////////////////// fix
+
     };
   }
 });
-
 
 var uploadFiles = multer({ storage: storage }).array("file", 10);
 var uploadFilesMiddleware = util.promisify(uploadFiles);
