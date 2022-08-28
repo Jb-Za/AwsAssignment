@@ -3,17 +3,38 @@ const dbConfig = require("../config/db");
 
 const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
-
+var mongoose = require('mongoose');
 const url = dbConfig.url;
 
 const baseUrl = "http://localhost:8080/files/";
+const myconnection2 = mongoose.createConnection("mongodb://127.0.0.1:27017/description");
 
 const mongoClient = new MongoClient(url);
 
-/*const uploadFiles = async (req, res) => {
+
+const textSchema = new mongoose.Schema(
+  {
+      //children:       [crimesChildSchema,areaChildSchema,addressChildSchema]
+      date: {type:Date},
+      email: {type:String},
+      text: {type:String},
+      
+  }
+);
+var textpost = myconnection2.model('TextPost', textSchema);   
+
+
+const uploadFiles = async (req, res) => {
   try {
     await upload(req, res);
+    var newtext = new textpost();
+    newtext.date = Date.now();
+   
+    newtext.text = req.body.textinput;
+    newtext.save(function(err,savePost){});
+
     console.log(req.files);
+    console.log(req.body.textinput);
 
     if (req.files.length <= 0) {
       return res
@@ -37,7 +58,7 @@ const mongoClient = new MongoClient(url);
       message: `Error when trying upload many files: ${error}`,
     });
   }
-};*/
+};
 
 const getListFiles = async (req, res) => {
   try {
@@ -103,28 +124,36 @@ const download = async (req, res) => {
 
 
 //////////////////////// aws comprehend testing
-const Text = "I heard three gunshots and a loud crash, followed by a lot of shouting on madilyn street, Bellville, Cape Town"
+var textToTest = "I heard three gunshots and a loud crash, followed by a lot of shouting on madilyn steet, Bellville, Cape Town"
+
+//const { ComprehendClient, BatchDetectDominantLanguageCommand } = require("@aws-sdk/client-comprehend");
+/*
+  const uploadFiles = async (req, res) => {
+  // a client can be shared by different commands.
+
+  const client = new ComprehendClient({ region: "us-east-1" });
+  const textinput = req.body.textinput;
+  const params = {
+  textToTest
+  };
+  const command = new BatchDetectDominantLanguageCommand(params);
+
+  // async/await.
+  try {
+  const data = await client.send(command);
+
+  console.log(data)
+  // process data.
+  } catch (error) {
+  // error handling.
+  } finally {
+  // finally.
+  }
 
 
-const AWS = require('aws-sdk')
-AWS.config.region = ( process.env.AWS_REGION || 'us-east-1' )
-
-const comprehend = new AWS.Comprehend()
-
-const uploadFiles = async (req) => {
-    const Text = "It is raining today in Seattle"
-    const params = {
-      LanguageCode: 'en',
-      Text
-    }
-
-    const result = await comprehend.detectEntities(params).promise()
-    console.log('doSentimentAnalysis: ', result)
-    return result
-  
 }
 
-
+*/
 /////////////////////// aws comprehend testing
 
 module.exports = {
