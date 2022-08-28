@@ -1,5 +1,14 @@
 <!DOCTYPE html>
 <html>
+    <head> 
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=yes">
+        <link rel="stylesheet" type="text/css" href="/css/tree.css" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+    </head>
     <style>
 
 #top,
@@ -12,7 +21,7 @@
 
 #top {
     top: 0;
-    background-color: white;
+    background-color: grey;
 }
 
 #bottom {
@@ -36,7 +45,15 @@
   left: 0;
   background-color: #111;
 }
+.topright {
+   right: 0;
+  background-color: lightgreen;
+}
 
+.topleft{
+  left: 0;
+  background-color: lightblue;
+}
 
 .right {
   right: 0;
@@ -44,23 +61,145 @@
 }
 
 .centered {
-  position: absolute;
+  position: relative;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
 }
 
-
-.centered img {
-  width: 150px;
-  border-radius: 50%;
-  
-}
 </style>
 
 <div id="top">
-    <title>Sign Up</title>
+    <div class="split topleft">   
+        <div class="centered"> 
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+            <body>
+            
+            <canvas id="myChart3" style="width:100%;max-width:600px"></canvas>
+            
+            <script>
+            var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+            var yValues = [55, 49, 44, 24, 15];
+            var barColors = [
+              "#b91d47",
+              "#00aba9",
+              "#2b5797",
+              "#e8c3b9",
+              "#1e7145"
+            ];
+            
+            new Chart("myChart3", {
+              type: "pie",
+              data: {
+                labels: xValues,
+                datasets: [{
+                  backgroundColor: barColors,
+                  data: yValues
+                }]
+              },
+              options: {
+                title: {
+                  display: true,
+                  text: "World Wide Wine Production 2018"
+                }
+              }
+            });
+            </script>
+                    
+                    </div>
+                </div>
+    
+    
+    <div class= "split topright">  
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              Areas List
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><a id = "Bellville"   class="dropdown-item" href="#">Bellville</a ></li>
+              <li><a id = "Kuils River" class="dropdown-item" href="#">Kuils River</a></li>
+              <li><a id = "Stellenbosch"class="dropdown-item" href="#">Stellenbosch</a></li>
+              <li><a id = "Edgemead"    class="dropdown-item" href="#">Edgemead</a></li>
+              <li><a id = "Table View" class="dropdown-item" href="#">Table View</a></li>
+              <li><a id = "Parow"       class="dropdown-item" href="#">Parow</a></li>
+              <li><a id = "Athlone" class="dropdown-item" href="#">Athlone</a></li>
+              <li><a id = "Elsies Rivier" class="dropdown-item" href="#">Elsies Rivier</a></li>
+              <li><a id = "Epping" class="dropdown-item" href="#">Epping</a></li>
+              <li><a id = "Belhar" class="dropdown-item" href="#">Belhar</a></li>
+              <li><a id = "Delft" class="dropdown-item" href="#">Delft</a></li>
+              <li><a id = "Brackenfell" class="dropdown-item" href="#">Brackenfell</a></li>
+              <li><a id = "Mitchells Plain" class="dropdown-item" href="#">Mitchells Plain</a></li>
+              <li><a id = "Philippi" class="dropdown-item" href="#">Philippi</a></li>
+              <li><a id = "Claremont" class="dropdown-item" href="#">Claremont</a></li>
+              <li><a id = "Muizenberg" class="dropdown-item" href="#">Muizenberg</a></li>
+            </ul>
+          </div> 
+        <div class="centered"> 
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+            <body>
+
+            <canvas id="myChart4" style="width:100%;max-width:600px"></canvas>
+            
+            <form
+                class="form-group"
+                action="/getDb"
+                method="GET"
+            >
+            </form>
+            
+            <script> 
+            
+            var xValues = [];
+var yValues = [];
+for(i in policeDb) {
+    addressArray = ['street','avenue', 'ave', 'str', 'close', 'lane', 'square', 'highway', 'boulevard']
+    testString = policeDb[i].Text.toLowerCase()
+    address = addressArray.some(w => testString.includes(w))
+    if (address) {
+        xValues.push(policeDb[i].Text);
+        yValues.push;
+    }
+}
+
+
+
+var barColors = [
+"#b91d47",
+"#00aba9",
+"#2b5797",
+"#e8c3b9",
+"#1e7145"
+];
+
+new Chart("myChart4", {
+type: "pie",
+data: {
+    labels: xValues,
+    datasets: [{
+    backgroundColor: barColors,
+    data: yValues
+    }]
+},
+options: {
+    title: {
+    display: true,
+    text: "World Wide Wine Production 2018"
+    }
+}
+});
+            
+            </script>
+            
+            </script>
+                    
+                    </div>
+                
+                </div>
+    
+    
+    
+    
    
 </div>
 <div id="bottom">
@@ -69,7 +208,8 @@
       <div class="centered">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
         <body>
-        <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+        <Heading>Number of Crimes Committed</Heading>
+        <canvas id="myChart" style="width:100%"></canvas>
         
         <script>
         var xyValues = [
@@ -112,8 +252,39 @@
     </div>
     
     <div class="split right">
-      <div class="centered">
-       
+        
+        <div class="centered">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+        <body>
+        <Heading>CRIMES COMMITED BY AREA</Heading>
+        <canvas id="myChart2" style="width:100%"></canvas>
+        
+        <script>
+               var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+        var yValues = [55, 49, 44, 24, 15];
+        var barColors = ["red", "green","blue","orange","brown"];
+        
+        new Chart("myChart2", {
+          type: "bar",
+          data: {
+            labels: xValues,
+            datasets: [{
+              backgroundColor: barColors,
+              data: yValues
+            }]
+          },
+          options: {
+            legend: {display: false},
+            title: {
+              display: true,
+              text: "World Wine Production 2018"
+            }
+          }
+        });
+        </script>
+        
+        </body>
+        </html>
         
       </div>
     </div>
@@ -121,8 +292,4 @@
 </div>
 
 </div>
-
-
-
-
 </html>

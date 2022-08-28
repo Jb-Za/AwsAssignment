@@ -24,7 +24,7 @@ var storage = new GridFsStorage({
   
 
 
-      filename: `${Date.now()}${file.originalname}` ///////////////////////////////////////// fix
+      filename: `${Date.now()}${file.originalname}` 
 
     };
   }
