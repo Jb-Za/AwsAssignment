@@ -57,17 +57,25 @@
         <div class="col-sm-8 mt-3">
           <h4>Enter report via text or attachments</h4>
           
+
           <div class="text-wrap form-group">
             <label for="text-input">Description</label>
             <textarea type="text" class="form-control" name="text-input"></textarea>
             
-        </div>
+          </div>
           <form
+
             class="mt-4"
             action="/upload"
             method="POST"
             enctype="multipart/form-data"
-          >
+          >  
+          <div class="text-wrap form-group">
+            <label for="textinput">Description</label>
+            <textarea type="text" class="form-control" name="textinput"></textarea>
+            
+        </div>
+
             <div class="form-group">
               <input
                 type="file"
@@ -77,19 +85,14 @@
                 class="form-control-file "
               />
               <!-- <input
-                type="text"
-                name="text-input"
+                type="file"
+                name="file"
+                id="input-files"
+                class="form-control-file border"
               /> -->
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
-          <form
-          class="mt-4"
-          action="/files/:nare"
-          method="GET"
-          >
-          <button type="download" class="btn btn-primary">Download</button>
-        </form>
         </div>
       </div>
       <hr />

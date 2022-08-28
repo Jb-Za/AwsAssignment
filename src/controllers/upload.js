@@ -1,5 +1,6 @@
 const upload = require("../middleware/upload");
 const dbConfig = require("../config/db");
+const PolicePost = require("../middleware/police");
 
 const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
@@ -9,6 +10,18 @@ const url = dbConfig.url;
 const baseUrl = "http://localhost:8080/files/";
 
 const mongoClient = new MongoClient(url);
+
+
+const textSchema = new mongoose.Schema(
+  {
+      //children:       [crimesChildSchema,areaChildSchema,addressChildSchema]
+      date: {type:Date},
+      email: {type:String},
+      text: {type:String},
+      
+  }
+);
+var textpost = myconnection2.model('TextPost', textSchema);   
 
 const uploadFiles = async (req, res) => {
   try {
@@ -99,10 +112,125 @@ const download = async (req, res) => {
   }
 };
 
+//////////////////////// aws comprehend 
+const ExampleText = "I heard three gunshots and a loud crash, followed by a lot of shouting on madilyn street, Bellville, Cape Town";
 
 
+const AWS = require('aws-sdk');
+AWS.config.region = ( process.env.AWS_REGION || 'us-east-1' );
+
+
+const comprehend = new AWS.Comprehend();
 
 //////////////////////// aws comprehend testing
+
+var textToTest = "I heard three gunshots and a loud crash, followed by a lot of shouting on madilyn steet, Bellville, Cape Town"
+
+const doComprehend = async (req, res) => {
+  const Text = req
+  const params = {
+    LanguageCode: 'en',
+    Text
+  }
+
+  res = await comprehend.detectEntities(params).promise();
+  //console.log('doSentimentAnalysis: ', res)
+  return res;
+  
+}
+
+/////////////////////// aws comprehend 
+
+const locations = [
+  'Bellville',
+  'Kuils River',
+  'Stellenbosch',
+  'Edgemead',
+  'Table View',
+  'Parow',
+  'Athlone',
+  'Elsies Rivier',
+  'Epping',
+  'Belhar',
+  'Delft',
+  'Brackenfell',
+  'Mitchells Plain',
+  'Philippi',
+  'Claremont',
+  'Muizenberg',
+]
+
+const catagories = [
+  "gunshots",
+  "hijacking",
+  "robbery",
+  "theft",
+  "burglary",
+  "arson",
+  "fraud",
+  "murder",
+  "stalking",
+  
+]
+const submitPost =  async (req, res) => {
+  
+  //var text = $(document).getElementsByName('text-input')[0].value                 ////fix
+  text = ExampleText;
+  console.log(text);
+  getTextCatagories(text);
+  
+  //uploadFiles(req, result);
+
+  //res = result;
+  //return res;
+}
+
+module.exports = PolicePost;
+
+const getTextCatagories = async (req) => {  // req will be the text from the text box
+  sentiment_res = await doComprehend (req); 
+  console.log(sentiment_res)
+
+  for (const [key, value] of Object.entries(sentiment_res)) { 
+    var postLocation, postaddress, postCatagory
+    for(const i in value){
+      index = locations.indexOf(value[i].Text);
+      if(index >=0){
+        console.log(value[i].Text);             // location value
+        postLocation = value[i].Text;
+      }
+      
+      for(j in catagories){
+        if(value[i].Text.includes(catagories[j])){
+          console.log(catagories[j]);          // catagories
+          postCatagory = catagories[j];
+        }
+      }
+
+      addressArray = ['street','avenue', 'ave', 'str', 'close', 'lane', 'square', 'highway', 'boulevard']
+      testString = value[i].Text.toLowerCase()
+      address = addressArray.some(w => testString.includes(w))
+      if (address){
+        console.log(value[i].Text);           // street address
+        postaddress = value[i].Text;
+      }
+    
+    }
+    
+    var newPolicPost = new PolicePost();
+    newPolicPost.date = Date.now();
+    newPolicPost.area = postLocation;
+    newPolicPost.crimes = postCatagory;
+    newPolicPost.address = postaddress;
+
+    newPolicPost.save(function(err,savePost){});
+
+    const filter = {};
+    console.log(await PolicePost.find(filter) )
+
+  }
+}
+
 // const Text = "I heard three gunshots and a loud crash, followed by a lot of shouting on madilyn street, Bellville, Cape Town"
 
 
@@ -125,11 +253,14 @@ const download = async (req, res) => {
 // }
 
 
+
 /////////////////////// aws comprehend testing
+
 
 module.exports = {
   uploadFiles,
   getListFiles,
   download,
+  submitPost
 };
 
