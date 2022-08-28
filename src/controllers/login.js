@@ -12,9 +12,10 @@ const crypto = require('crypto');
 const path = require('path');
 
 module.exports = UserLogin;
+var email = '';
 
 const login = (req, res)  =>{
-    var email = req.body.email;
+    email = req.body.email;
     var password = req.body.pwd;
   
     UserLogin.findOne({email:email},function(err,data){
@@ -39,9 +40,15 @@ const login = (req, res)  =>{
   
   };
   
+  const getUserEmail = (res) =>{
+    res = email;
+    return res;
+  }
+
 
 
   
   module.exports = {
-    login
+    login,
+    getUserEmail
   };
