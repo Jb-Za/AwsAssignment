@@ -37,7 +37,7 @@ const uploadFiles = async (req, res) => {
     newtext.save(function(err,savePost){});
 
     getTextCatagories(newtext.text);
-    //console.log(req.files);
+    console.log(req.files);
     //console.log(req.body.textinput);
     
     if (req.files.length <= 0) {
@@ -69,7 +69,7 @@ const uploadFiles = async (req, res) => {
 };
 
 //////////////////////// aws comprehend 
-const ExampleText = "I heard three gunshots and a loud crash, followed by a lot of shouting on madilyn street, Bellville, Cape Town";
+//const ExampleText = "I heard three gunshots and a loud crash, followed by a lot of shouting on madilyn street, Bellville, Cape Town";
 
 
 const AWS = require('aws-sdk');
@@ -183,8 +183,8 @@ const getTextCatagories = async (req) => {  // req will be the text from the tex
 
     newPolicPost.save(function(err,savePost){});
 
-    const filter = {};
-    console.log(await PolicePost.find(filter) )
+    //const filter = {};
+    //console.log(await PolicePost.find(filter) )
 
   }
 }
